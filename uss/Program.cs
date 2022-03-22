@@ -7,37 +7,44 @@ using System.Threading.Tasks;
 
 namespace uss
 {
-    internal class Program
+    class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args) 
         {
             Console.SetWindowSize(80, 25);
+            Walls walls = new Walls(80, 25);
+            walls.Draw();
 
-            HorizontalLines upLine = new HorizontalLines(0, 78, 0, '+');
-            HorizontalLines downLine = new HorizontalLines(0, 78, 24, '+');
-            VerticalLines leftLine = new VerticalLines(0, 24, 0, '+');
-            VerticalLines rightLine = new VerticalLines(0, 24, 78, '+');
-            upLine.Drow();
-            downLine.Drow();
-            leftLine.Drow();
-            rightLine.Drow();
-
-            Point p = new Point(4, 5, '*');
+            Point p = new Point(4, 5, '卐');
             Snake snake = new Snake(p, 4, Direction.RIGHT);
-            snake.Drow();
+            snake.Draw();
+
+            FoodCreator foodCreator = new FoodCreator(80, 25, '$');
+            Point food = foodCreator.CreateFood();
+            food.Draw();
+
             while (true)
             {
+                if (walls.IsHit(snake) || snake.IsHitTail())
+                {
+                    break;
+                }
+                if (snake.Eat(food))
+                {
+                    food = foodCreator.CreateFood();
+                    food.Draw();
+                }
+                else
+                {
+                    snake.Move();
+                }
+                Thread.Sleep(100);
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey();
-                    snake.HandlKey(key.Key);
+                    snake.HandleKey(key.Key);
                 }
-                Thread.Sleep(100);
-                snake.Move();
-               
             }
-
         }
-       
-    }
+    }                      
 }
