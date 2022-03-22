@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace uss
 {
-    enum Direction
+    enum Direction // создание направления змейки
     {
         LEFT, 
         RIGHT, 

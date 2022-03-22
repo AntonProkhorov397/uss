@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace uss
 {
-    internal class VerticalLines : Figure
+    internal class VerticalLines : Figure // Класс для создания вертикальных линий
     {
         public VerticalLines(int yUp, int yDown, int x, char sym)
         {
@@ -16,7 +16,6 @@ namespace uss
                 Point p = new Point(x, y, sym);
                 pList.Add(p);
             }
-        }
-       
+        }     
     }
 }
