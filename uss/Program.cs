@@ -45,26 +45,41 @@ namespace uss
                     snake.HandleKey(key.Key);
                 }
             }
-            WriteGameOver();
-            Console.ReadLine();
-        }
-        static void WriteGameOver()
-        {
-            int xOffset = 25;
-            int yOffset = 8;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.SetCursorPosition(xOffset, yOffset++);
-            WriteText("============================", xOffset, yOffset++);
-            WriteText("GAME OVER!", xOffset + 10, yOffset++);
-            yOffset++;
-            WriteText("Developer: Anton Prokhorov", xOffset, yOffset++);
-            WriteText("============================", xOffset, yOffset++);
-        }
+            
 
-        static void WriteText(String text, int xOffset, int yOffset)
-        {
-            Console.SetCursorPosition(xOffset, yOffset);
-            Console.WriteLine(text);
+            //Добавление статистики справа Score, Level
+            Score score = new Score(0, 1);
+            score.speed = 150;//Изначальная скорость
+            score.ScoreWrite();
+            while (true)
+            {
+                if (snake.Eat(food))//Если змейка сьедает, то score увеличивается
+                {
+                    score.ScoreUp();
+                    score.ScoreWrite();
+                    food = foodCreator.CreateFood();
+                    food.Draw();
+                    if (score.ScoreUp())//Если Score увеличился, то скорость увеличилась на 10 единиц
+                    {
+                        score.speed -= 10;
+                    }
+                }
+                else
+                {
+                    snake.Move();
+                }
+                Thread.Sleep(score.speed);
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo key = Console.ReadKey(true);
+                    snake.HandleKey(key.Key);
+                }
+            }
+            GameOver gameOver = new GameOver();
+            gameOver.WriteGameOver();
+            Console.ReadLine();
+            
         }
+        
     }                      
 }
